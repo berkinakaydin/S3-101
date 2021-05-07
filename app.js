@@ -1,12 +1,14 @@
 const Hapi = require('@hapi/hapi');
 const config = require('./config');
 const routes = require('./routes');
+const awsS3Util = require('./utils/aws-s3');
 
 const init = async () => {
   const server = Hapi.server({
     port: config.PORT,
-    host: 'localhost',
   });
+
+  awsS3Util.createS3Bucket({ bucketName: config.BUCKET_NAME });
 
   server.route(routes);
 

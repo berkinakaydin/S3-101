@@ -5,14 +5,13 @@ module.exports = class ImageController {
     this.ImageService = ImageService;
   }
 
-  static test(request) {
-    console.log(request);
-    return ImageService.test();
-  }
+  static async uploadImage(request, h) {
+    const image = request.payload.file;
+    const status = await ImageService.putObject({ object: image });
 
-  static upload(request) {
-    console.log(request);
-
-    return 'Hello World2';
+    if (status) {
+      return h.response('File Created').code(201);
+    }
+    return h.response({ status: false, msg: 'error' }).code(200);
   }
 };
