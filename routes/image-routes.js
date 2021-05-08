@@ -4,7 +4,7 @@ const imageSchema = require('../schema/image');
 module.exports = [
   {
     method: 'POST',
-    path: '/images',
+    path: '/v1/images',
     handler: ImageController.uploadImage,
     options: {
       description: 'Upload Image To AWS S3',
@@ -16,6 +16,7 @@ module.exports = [
         },
       },
       validate: imageSchema.images.validate,
+      response: imageSchema.images.response,
       payload: {
         maxBytes: 10485760,
         output: 'stream',
