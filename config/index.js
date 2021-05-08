@@ -1,5 +1,5 @@
 const REGION = process.env.REGION || 'eu-west-1'; // The AWS Region. For example, "us-east-1".
-const BUCKET_NAME = 'berkinakaydin-affinidi-study';
+const BUCKET_NAME = process.env.BUCKET_NAME || 'berkinakaydin-affinidi-study';
 
 module.exports = {
   HOST: process.env.HOST || (process.env.NODE_ENV === 'production') ? undefined : 'localhost',
