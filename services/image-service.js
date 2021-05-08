@@ -1,7 +1,20 @@
 const fs = require('fs');
+const sharp = require('sharp');
 const awsS3Util = require('../utils/aws-s3');
 const { BUCKET_NAME } = require('../config');
 const { MIME_EXTENSION_MAP } = require('../constants');
+
+const convertExtension = async ({ fileBuffer }) => ({
+  fileBuffer: await sharp(fileBuffer).toFormat('png').toBuffer(),
+  extension: 'png',
+});
+
+const compressImage = async ({ fileBuffer }) => (
+  sharp(fileBuffer)
+    .jpeg({ progressive: true, chromaSubsampling: '4:4:4', force: false })
+    .png({ quality: 80, progressive: true, force: false })
+    .toBuffer()
+);
 
 module.exports = class ImageService {
   static async getBucket({ bucketName }) {
@@ -18,13 +31,15 @@ module.exports = class ImageService {
     const filePath = object.path;
     const fileName = object.filename;
     const fileExtension = fileName.split('.').pop();
-    const fileStream = fs.readFileSync(filePath);
+    const fileBuffer = fs.readFileSync(filePath);
+
+    const compressedFileBuffer = await compressImage({ fileBuffer });
 
     // Set the parameters
     const uploadParams = {
       Bucket: BUCKET_NAME,
       Key: fileName,
-      Body: fileStream,
+      Body: compressedFileBuffer,
       ContentType: MIME_EXTENSION_MAP[fileExtension],
     };
 
