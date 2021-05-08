@@ -1,4 +1,5 @@
 const { ImageService } = require('../services');
+const { BUCKET_PATH } = require('../config');
 
 module.exports = class ImageController {
   constructor() {
@@ -10,8 +11,9 @@ module.exports = class ImageController {
     const status = await ImageService.putImage({ object: image });
 
     if (status) {
-      return h.response('File Created').code(201);
+      const fileUrl = `${BUCKET_PATH}/${image.hapi.filename}`;
+      return h.response({ status: true, message: 'File Uploaded Successfully', url: fileUrl }).code(201);
     }
-    return h.response({ status: false, msg: 'error' }).code(200);
+    return h.response({ status: false, message: 'error' }).code(200);
   }
 };
