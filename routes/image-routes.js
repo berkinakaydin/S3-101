@@ -8,7 +8,7 @@ module.exports = [
     options: {
       payload: {
         maxBytes: 10485760,
-        output: 'file',
+        output: 'stream',
         parse: true,
         allow: ['multipart/form-data'],
         multipart: true,
