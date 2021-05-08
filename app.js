@@ -2,6 +2,7 @@ const Hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
+const { BUCKET_NAME } = require('./config');
 
 const config = require('./config');
 const routes = require('./routes');
@@ -12,6 +13,11 @@ const init = async () => {
     port: config.PORT,
     host: config.HOST,
   });
+
+  if (BUCKET_NAME === undefined) {
+    console.error(`Bucket Not Found : ${BUCKET_NAME}`);
+    process.exit(0);
+  }
 
   const swaggerOptions = {
     info: {
