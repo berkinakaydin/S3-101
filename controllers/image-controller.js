@@ -12,8 +12,17 @@ module.exports = class ImageController {
 
     if (status) {
       const fileUrl = `${BUCKET_PATH}/${image.hapi.filename}`;
-      return h.response({ status: true, message: 'File Uploaded Successfully', url: fileUrl }).code(201);
+
+      return h.response({
+        status: true,
+        message: 'File Uploaded Successfully',
+        url: fileUrl,
+      }).code(201);
     }
-    return h.response({ status: false, message: 'File Couldn\'t Uploaded' }).code(200);
+
+    return h.response({
+      status: false,
+      message: 'File Couldn\'t Uploaded',
+    }).code(200);
   }
 };
