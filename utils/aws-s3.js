@@ -31,7 +31,7 @@ const createS3Bucket = async ({ bucketName }) => {
       console.log(`Bucket ${bucketName} created successfully`);
       return data;
     } catch (err) {
-      console.log(`Bucket ${bucketName} couldn't create`);
+      console.log(`Bucket ${bucketName} couldn't created`);
       return null;
     }
   }
