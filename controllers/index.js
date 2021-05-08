@@ -1,5 +1,5 @@
-const ImageService = require('./image-controller');
+const ImageController = require('./image-controller');
 
 module.exports = {
-  ImageService,
+  ImageController,
 };
