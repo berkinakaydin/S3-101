@@ -1,5 +1,8 @@
 const ImageController = require('../controllers/image-controller');
-const imageSchema = require('../schema/image');
+const {
+  upload,
+  fetch,
+} = require('../schema/image');
 
 module.exports = [
   {
@@ -15,8 +18,8 @@ module.exports = [
           payloadType: 'form',
         },
       },
-      validate: imageSchema.images.validate,
-      response: imageSchema.images.response,
+      validate: upload.validate,
+      response: upload.response,
       payload: {
         maxBytes: 10485760,
         output: 'stream',
@@ -24,6 +27,18 @@ module.exports = [
         allow: ['multipart/form-data'],
         multipart: true,
       },
+    },
+  },
+  {
+    method: 'GET',
+    path: '/v1/images/{imageName}',
+    handler: ImageController.getImage,
+    options: {
+      validate: fetch.validate,
+      response: fetch.response,
+      description: 'Fetch Image From AWS S3 With Image Name',
+      notes: 'Receives image from AWS with name',
+      tags: ['api'], // ADD THIS TAG
     },
   },
 ];

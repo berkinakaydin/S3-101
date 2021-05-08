@@ -43,4 +43,14 @@ module.exports = class ImageService {
 
     return awsS3Util.putObjectS3Bucket({ uploadParams });
   }
+
+  static async getImage({ imageName }) {
+    // Set the parameters
+    const uploadParams = {
+      Bucket: BUCKET_NAME,
+      Key: imageName,
+    };
+
+    return awsS3Util.getObjectS3Bucket({ uploadParams });
+  }
 };

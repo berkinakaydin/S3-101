@@ -1,5 +1,10 @@
 const {
-  S3Client, HeadBucketCommand, CreateBucketCommand, PutObjectCommand, DeleteBucketCommand,
+  S3Client,
+  HeadBucketCommand,
+  CreateBucketCommand,
+  PutObjectCommand,
+  DeleteBucketCommand,
+  GetObjectCommand,
 } = require('@aws-sdk/client-s3');
 const { REGION } = require('../config');
 
@@ -50,10 +55,21 @@ const deleteS3Bucket = async ({ bucketName }) => {
 const putObjectS3Bucket = async ({ uploadParams }) => {
   try {
     const data = await s3.send(new PutObjectCommand(uploadParams));
-    console.log('Success', data);
+    console.log(`${uploadParams.Key} added successfully`);
     return data;
   } catch (err) {
-    console.log('Error', err);
+    console.log(`Failed to add : ${uploadParams.Key}`);
+    return null;
+  }
+};
+
+const getObjectS3Bucket = async ({ uploadParams }) => {
+  try {
+    const data = await s3.send(new GetObjectCommand(uploadParams));
+    console.log(`${uploadParams.Key} retrieved successfully`);
+    return data;
+  } catch (err) {
+    console.log(`Failed to retrieve : ${uploadParams.Key}`);
     return null;
   }
 };
@@ -63,4 +79,5 @@ module.exports = {
   isBucketExists,
   putObjectS3Bucket,
   deleteS3Bucket,
+  getObjectS3Bucket,
 };
