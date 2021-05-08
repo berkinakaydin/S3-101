@@ -2,6 +2,7 @@ const ImageController = require('../controllers/image-controller');
 const {
   upload,
   fetch,
+  conversion,
 } = require('../schema/image');
 
 module.exports = [
@@ -38,6 +39,18 @@ module.exports = [
       response: fetch.response,
       description: 'Fetch Image From AWS S3 With Image Name',
       notes: 'Receives image from AWS with name',
+      tags: ['api'], // ADD THIS TAG
+    },
+  },
+  {
+    method: 'GET',
+    path: '/v1/images/{imageName}/extensions/{extension}',
+    handler: ImageController.convertImageExtension,
+    options: {
+      validate: conversion.validate,
+      response: conversion.response,
+      description: 'Fetch Image From AWS S3 With Image Name And New Extension Name',
+      notes: 'Receives image from AWS with name according to extension',
       tags: ['api'], // ADD THIS TAG
     },
   },

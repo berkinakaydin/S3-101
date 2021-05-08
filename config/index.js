@@ -7,4 +7,5 @@ module.exports = {
   REGION,
   BUCKET_NAME,
   BUCKET_PATH: `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com`,
+  VALID_EXTENSIONS: ['png', 'jpg', 'jpeg'],
 };

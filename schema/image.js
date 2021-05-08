@@ -20,13 +20,38 @@ module.exports = {
           status: Joi.boolean().required().example(false),
           message: Joi.string().required().example('File Couldn\'t Uploaded'),
         }).label('Upload-Image-Fail-Response'),
+        403: Joi.object({
+          status: Joi.boolean().required().example(false),
+          message: Joi.string().required().example('Not Valid Extension'),
+        }).label('Upload-Image-Not-Valid-Extension-Response'),
       },
     },
   },
   fetch: {
     validate: {
       params: Joi.object({
-        imageName: Joi.string().pattern(new RegExp('^.*\\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|doc|DOC|pdf|PDF)$')),
+        imageName: Joi.string().required().pattern(new RegExp('^.*\\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|doc|DOC|pdf|PDF)$')),
+      }).options({ stripUnknown: true }),
+    },
+    response: {
+      status: {
+        200: Joi.object({
+          status: Joi.boolean().required().example(true),
+          message: Joi.string().required().example('File Received Successfully'),
+          url: Joi.string().required().example('https://s3bucket.s3.region/filename'),
+        }).label('Fetch-Image-Success-Response'),
+        404: Joi.object({
+          status: Joi.boolean().required().example(false),
+          message: Joi.string().required().example('File Not Found'),
+        }).label('Fetch-Image-Fail-Response'),
+      },
+    },
+  },
+  conversion: {
+    validate: {
+      params: Joi.object({
+        imageName: Joi.string().required().pattern(new RegExp('^.*\\.(png|PNG|jpg|JPG|jpeg|JPEG)$')),
+        extension: Joi.string().required().valid('jpg', 'jpeg', 'png'),
       }).options({ stripUnknown: true }),
     },
     response: {

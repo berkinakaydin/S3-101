@@ -1,18 +1,7 @@
-const sharp = require('sharp');
 const awsS3Util = require('../utils/aws-s3');
+const stringUtil = require('../utils/string');
+const imageProcessUtil = require('../utils/image-process');
 const { BUCKET_NAME } = require('../config');
-
-const convertExtension = async ({ fileBuffer }) => ({
-  fileBuffer: await sharp(fileBuffer).toFormat('png').toBuffer(),
-  extension: 'png',
-});
-
-const compressImage = async ({ fileBuffer }) => (
-  sharp(fileBuffer)
-    .jpeg({ progressive: true, chromaSubsampling: '4:4:4', force: false })
-    .png({ quality: 80, progressive: true, force: false })
-    .toBuffer()
-);
 
 module.exports = class ImageService {
   static async getBucket({ bucketName }) {
@@ -25,17 +14,15 @@ module.exports = class ImageService {
     return bucket;
   }
 
-  static async putImage({ object }) {
-    const contentType = object.hapi.headers['content-type'];
-    const fileName = object.hapi.filename;
-    // eslint-disable-next-line no-underscore-dangle
-    const fileBuffer = object._data;
-    const compressedFileBuffer = await compressImage({ fileBuffer });
+  static async putImage({ imageName, imageData }) {
+    const imageExtension = stringUtil.getExtension(imageName);
+    const contentType = `image/${imageExtension}`;
+    const compressedFileBuffer = await imageProcessUtil.compressImage({ fileBuffer: imageData });
 
     // Set the parameters
     const uploadParams = {
       Bucket: BUCKET_NAME,
-      Key: fileName,
+      Key: imageName,
       Body: compressedFileBuffer,
       ContentType: contentType,
       ACL: 'public-read',
@@ -50,7 +37,36 @@ module.exports = class ImageService {
       Bucket: BUCKET_NAME,
       Key: imageName,
     };
-
     return awsS3Util.getObjectS3Bucket({ uploadParams });
+  }
+
+  static async convertImageExtension({ imageName, newExtension }) {
+    const imageNameWithoutExtension = stringUtil.removeExtension(imageName);
+
+    const s3Image = await this.getImage({ imageName });
+
+    if (s3Image) {
+      const s3ImageContentType = s3Image.ContentType;
+
+      const isSameExtension = stringUtil.getExtensionFromMime(s3ImageContentType) === newExtension;
+
+      if (isSameExtension) {
+        return s3Image;
+      }
+
+      const fileBuffer = await imageProcessUtil.streamToBuffer(s3Image.Body);
+
+      const convertedImageBuffer = await imageProcessUtil.convertExtension({
+        fileBuffer,
+        extension: newExtension,
+      });
+
+      return this.putImage({
+        imageName: `${imageNameWithoutExtension}.${newExtension}`,
+        imageData: convertedImageBuffer,
+      });
+    }
+
+    return null;
   }
 };
