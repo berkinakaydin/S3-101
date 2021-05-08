@@ -7,7 +7,13 @@ This repository is contains study case of Affinidi for Backend Development depar
 * Compress Image
 * Convert Extensions (JPG - JPEG - PNG only)
 
-##  Before Start 
+##  Before Starting
+
+Clone the repository:
+```
+git clone https://github.com/berkinakaydin/affinidi-study.git
+cd affinidi-study
+```
 
 Download [yarn](https://yarnpkg.com/getting-started/install) package manager. Then run the command below.
 
@@ -19,7 +25,7 @@ yarn
  
 ```js
 {
-  HOST: 'localhost(default)',
+  HOST: 'localhost (default)',
   PORT: '8080 (default)',
   REGION: 'eu-west-1 (default)',
   BUCKET_NAME: '<S3 BUCKET NAME>',
@@ -29,6 +35,11 @@ yarn
 ```
 
 ## Usage
+
+Next, run the following commands to start
+```
+yarn run start 
+```
 
 Simply look up **Swagger Documentation** to find out available endpoints. You can find it on 
 ```
