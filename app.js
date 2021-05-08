@@ -10,6 +10,7 @@ const awsS3Util = require('./utils/aws-s3');
 const init = async () => {
   const server = Hapi.server({
     port: config.PORT,
+    host: config.HOST,
   });
 
   const swaggerOptions = {

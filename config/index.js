@@ -2,6 +2,7 @@ const REGION = process.env.REGION || 'eu-west-1'; // The AWS Region. For example
 const BUCKET_NAME = 'berkinakaydin-affinidi-study';
 
 module.exports = {
+  HOST: process.env.HOST || 'localhost',
   PORT: process.env.PORT || 8080,
   REGION,
   BUCKET_NAME,
