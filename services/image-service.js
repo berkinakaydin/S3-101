@@ -38,6 +38,7 @@ module.exports = class ImageService {
       Key: fileName,
       Body: compressedFileBuffer,
       ContentType: contentType,
+      ACL: 'public-read',
     };
 
     return awsS3Util.putObjectS3Bucket({ uploadParams });
