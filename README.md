@@ -45,6 +45,13 @@ Simply look up **Swagger Documentation** to find out available endpoints. You ca
 ```
 https://localhost:8080/documentation
 ``` 
+## Notes
+This application is currently running on 
+
+Provider | URL |
+--- | --- |
+Digitalocean | http://161.35.196.83:8080/documentation 
+Heroku | https://affinidi-case-study.herokuapp.com/documentation
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
