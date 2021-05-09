@@ -2,6 +2,12 @@
 
 name: CI
 
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: affinidi-case-study-project
+  REGISTRY_NAME: affinidi-case-study
+
+
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -46,3 +52,43 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+  #Push to Digital Ocean private Registry
+  pushToDORegistry:
+    # Ensure test job passes before pushing image.
+    needs: build
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' 
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+      - name: Install doctl                 # install the doctl on the runner
+        uses: digitalocean/action-doctl@v2
+        with:
+            token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: push image to digitalocean
+        run: |
+          doctl registry login
+          docker tag $IMAGE_NAME registry.digitalocean.com/$REGISTRY_NAME/$IMAGE_NAME
+          docker push registry.digitalocean.com/$REGISTRY_NAME/$IMAGE_NAME
+
+  #Run the container in droplet
+  deploy:
+    needs: pushToDORegistry
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' 
+    steps:
+        - uses: actions/checkout@v2
+        - name: Executing remote  command
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.HOST }}
+            USERNAME: ${{ secrets.USERNAME }}
+            PORT: ${{ secrets.PORT }}
+            password: ${{ secrets.PASSWORD }}
+            script: |
+                <WHAT IS COMMAND NEEDED TO PULL IMAGE FROM DIGITAL OCEAN REGISTRY and RUN THE DOCKER IMAGE>
