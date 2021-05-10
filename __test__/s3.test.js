@@ -1,28 +1,30 @@
 const faker = require('faker');
-const mockS3Client = require('@aws-sdk/client-s3');
-const { REGION } = require('../config');
 
-const mockCreateBucket = jest.fn();
+const awsS3Util = require('../utils/aws-s3');
+const { ImageService } = require('../services');
 
-jest.mock('@aws-sdk/client-s3', () => {
-  const mS3 = {
-    createBucketCommand: jest.fn().mockReturnThis(),
-    promise: jest.fn(),
-  };
-  return jest.fn(() => mS3);
+test('has to get bucket', async () => {
+  const isBucketExistsMock = jest.spyOn(awsS3Util, 'isBucketExists');
+  isBucketExistsMock.mockImplementation(() => ({ success: true }));
+
+  const bucketName = faker.random.word();
+
+  const bucket = await ImageService.getBucket({ bucketName });
+
+  expect(bucket).toEqual({ success: true });
+
+  isBucketExistsMock.mockRestore();
 });
 
-const { createS3Bucket } = require('../utils/aws-s3');
+test('has to create bucket', async () => {
+  const createBucketMock = jest.spyOn(awsS3Util, 'createS3Bucket');
+  createBucketMock.mockImplementation(() => ({ success: true }));
 
-test('has to mock S3#createBucket', async (done) => {
-  const bucketName = Math.random().toString(36);
-  const mS3 = new mockS3Client();
-  mS3.createBucketCommand().promise;
-  await createS3Bucket({ bucketName });
+  const bucketName = faker.random.word();
 
-  // const bucketName = Math.random().toString(36);
-  // await createS3Bucket({bucketName});
-  // expect(mockCreateBucket).toHaveBeenCalled;
-  // await deleteS3Bucket({bucketName})
-  // done();
+  const bucket = await ImageService.createBucket({ bucketName });
+
+  expect(bucket).toEqual({ success: true });
+
+  createBucketMock.mockRestore();
 });
