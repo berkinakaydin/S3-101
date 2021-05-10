@@ -1,9 +1,19 @@
 const path = require('path');
 const mime = require('mime-types');
 
-const removeExtension = (string) => (path.parse(string).name);
+const removeExtension = (string) => {
+  if (typeof string === 'string') {
+    return path.parse(string).name;
+  }
+  return string;
+};
 
-const getExtension = (string) => (string.split('.').pop());
+const getExtension = (string) => {
+  if (typeof string === 'string') {
+    return string.split('.').pop();
+  }
+  return string;
+};
 
 const getExtensionFromMime = (mimeType) => (mime.extension(mimeType));
 
