@@ -9,6 +9,7 @@
     "eslint": "^7.25.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.6",
     "faker": "^5.5.3",
     "jest": "^26.6.3"
   },
@@ -30,7 +31,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo '[Husky] pre-commit'"
+      "pre-commit": "yarn run jest"
     }
   }
 }
