@@ -39,7 +39,7 @@ jobs:
         
       # Run tests
       - name: Test
-        run: echo test will be implemented
+        run: yarn run jest
         
       # Run audit to check deps
       - name: Check Dependencies
