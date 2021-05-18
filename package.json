@@ -1,7 +1,7 @@
 {
-  "name": "affinidi",
+  "name": "s3-101",
   "version": "1.0.0",
-  "description": "affinidi study case ",
+  "description": "s3-101 practice",
   "main": "app.js",
   "author": "Berkin Akaydın <berkin.akaydin@getir.com>",
   "license": "MIT",

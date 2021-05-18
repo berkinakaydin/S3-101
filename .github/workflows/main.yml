@@ -74,7 +74,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: berkin768/affinidi-study:latest
+          tags: berkin768/s3-101:latest
 
   #Run the container in droplet
   deploy:
@@ -98,12 +98,12 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           envs: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, BUCKET_NAME, NODE_ENV
           script: |
-            docker stop affinidi
-            docker container rm affinidi -f
-            docker pull berkin768/affinidi-study:latest
-            docker run --name affinidi --network=host -d -p 8080:8080 \
+            docker stop s3-101
+            docker container rm s3-101 -f
+            docker pull berkin768/s3-101:latest
+            docker run --name s3-101 --network=host -d -p 8080:8080 \
             -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
             -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
             -e BUCKET_NAME=$BUCKET_NAME \
             -e NODE_ENV=$NODE_ENV \
-            berkin768/affinidi-study:latest 
+            berkin768/s3-101:latest 

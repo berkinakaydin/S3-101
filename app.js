@@ -21,7 +21,7 @@ const init = async () => {
 
   const swaggerOptions = {
     info: {
-      title: 'Affinidi Study Case API Documentation',
+      title: 'S3-101 API Documentation',
       version: '0.1.0',
     },
   };

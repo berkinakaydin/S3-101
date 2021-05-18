@@ -1,6 +1,6 @@
-# Affinidi Study Case
+# S3 101
 
-This repository is contains study case of Affinidi for Backend Development department. A basic NodeJS app to upload images to AWS S3. It has several features like
+This repository contains basic CRUD operations for AWS S3. A basic NodeJS app to upload images to AWS S3. It has several features like
 
 * Upload Image To S3
 * Retrieve Image URL from S3
@@ -11,8 +11,8 @@ This repository is contains study case of Affinidi for Backend Development depar
 
 Clone the repository:
 ```
-git clone https://github.com/berkinakaydin/affinidi-study.git
-cd affinidi-study
+git clone https://github.com/berkinakaydin/S3-101.git
+cd S3-101
 ```
 
 Download [yarn](https://yarnpkg.com/getting-started/install) package manager. Then run the command below.
@@ -51,7 +51,7 @@ This application is currently running on
 Provider | URL |
 --- | --- |
 Digitalocean | http://161.35.196.83:8080/documentation 
-Heroku | https://affinidi-case-study.herokuapp.com/documentation
+Heroku | https://s3-101.herokuapp.com/documentation
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
